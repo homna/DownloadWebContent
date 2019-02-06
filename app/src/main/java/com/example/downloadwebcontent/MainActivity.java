@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView textView = findViewById(R.id.textView);
 
         DownloadWebSite downloadWebSite = new DownloadWebSite();
         String output = "";
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Problem2", e.getMessage());
         }
         Log.i("HTML", output);
+        textView.setText(output);
     }
 
     public class DownloadWebSite extends AsyncTask<String, Void, String> {
@@ -36,12 +39,13 @@ public class MainActivity extends AppCompatActivity {
             result.append("");
             for (String string : strings) {
                 Log.i("HTML", "Downloading ...." + string);
+                result.append(string);
                 try {
                     URL url = new URL(string);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     InputStream inputStream = httpURLConnection.getInputStream();
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                    //First Solution
+
                     int read = inputStreamReader.read();
                     while (read != -1) {
                         char character = (char) read;
